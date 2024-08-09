@@ -1,18 +1,20 @@
 const { Schema, model } = require('mongoose');
-const bcrypt = require('bcryptjs')
-const crypto = require('crypto')
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+const ErrorHandler = require('../utils/ErrorHandler')
 
 const artistSchema = new Schema({
   artistName: {
     type: String,
   },
-  email:{
+  email: {
     type: String,
-    require: [true, 'Email is mandatory']
+    require: [true, 'Email is mandatory'],
   },
-  password:{
+  password: {
     type: String,
-    require: [true, 'password is mandatory']
+    require: [true, 'password is mandatory'],
+    select: false,
   },
   firstName: {
     type: String,
@@ -51,55 +53,61 @@ const artistSchema = new Schema({
       type: String,
     },
   },
-  bankDetails:{
-    accountNo:{
-        type: String,
+  bankDetails: {
+    accountNo: {
+      type: String,
     },
-    ifscCode:{
-        type: String
+    ifscCode: {
+      type: String,
     },
-    accountHolderName:{
-        type: String,
+    accountHolderName: {
+      type: String,
     },
-    checkBook:{
-        type: String
+    checkBook: {
+      type: String,
     },
-    isBankDetailsEdited:{
-        type: Boolean,
-        default: false
-    }
-  }
+    isBankDetailsEdited: {
+      type: Boolean,
+      default: false,
+    },
+  },
 });
 
 artistSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
-    try {
-      this.password = await bcrypt.hash(this.password, 12);
-    } catch (error) {
-      return next(new APPError(error.message, 500));
-    }
-  
-    next();
-  });
+  if (!this.isModified('password')) return next();
+  try {
+    this.password = await bcrypt.hash(this.password, 12);
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
 
-  artistSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
-    if (this.passwordChangedAt) {
-      const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
-  
-      return JWTTimestamp < changedTimestamp;
-    }
-    //false means password not changed
-    return false;
-  };
-  
-  artistSchema.methods.createPasswordResetToken = function () {
-    const resetToken = crypto.randomBytes(32).toString('hex');
-  
-    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-    //10 miniutes for password reset
-    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-    return resetToken;
-  };
+  next();
+});
+
+artistSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+
+    return JWTTimestamp < changedTimestamp;
+  }
+  //false means password not changed
+  return false;
+};
+
+artistSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+  //10 miniutes for password reset
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+  return resetToken;
+};
 
 const Artist = model('Artist', artistSchema);
 

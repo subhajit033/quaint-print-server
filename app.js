@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express')
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
+const artistRoute = require('./routes/artist.route')
 const globalErrorHandler = require('./middlewares/globalErrorHandler')
 
 const app = express();
@@ -14,6 +15,8 @@ const corsOption = {
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOption))
+
+app.use('/api/v1/artists', artistRoute);
 
 app.use(globalErrorHandler);
 
