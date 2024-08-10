@@ -31,12 +31,12 @@ const productSchema = new Schema({
     required: true,
     default: false,
   },
-  artist:{
-    type:  Schema.Types.ObjectId,
+  artist: {
+    type: Schema.Types.ObjectId,
     required: true,
-    ref: 'Artist'
-  }
-});
+    ref: 'Artist',
+  },
+}, {timestamps: true});
 
 const Product = model('Product', productSchema);
 

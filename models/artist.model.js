@@ -10,6 +10,7 @@ const artistSchema = new Schema({
   email: {
     type: String,
     require: [true, 'Email is mandatory'],
+    unique:true,
   },
   password: {
     type: String,
@@ -71,7 +72,7 @@ const artistSchema = new Schema({
       default: false,
     },
   },
-});
+}, {timestamps: true});
 
 artistSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
