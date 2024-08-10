@@ -1,5 +1,5 @@
 const {Router} = require('express');
-// const {uploadPhotos} = require('../controllers/upload.controller')
+const {uploadToClould} = require('../controllers/upload.controller')
 const upload = require('../utils/multer')
 
 const router = Router();
@@ -9,6 +9,6 @@ router.get("/", (req, res)=>{
     })
 })
 
-router.post('/uploadart', upload.single('uploadArt'))
+router.post('/uploadart', upload.single('uploadArt'), uploadToClould)
 
 module.exports = router;

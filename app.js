@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors')
 const artistRoute = require('./routes/artist.route')
 const uploadRoute = require('./routes/upload.route')
+const userRoute = require('./routes/user.route')
 const globalErrorHandler = require('./middlewares/globalErrorHandler')
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(cors(corsOption))
 
 app.use('/api/v1/artists', artistRoute);
 app.use('/api/v1/uploads', uploadRoute);
+app.use('/api/v1/users', userRoute);
 
 app.use(globalErrorHandler);
 

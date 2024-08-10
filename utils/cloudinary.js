@@ -23,7 +23,7 @@ const uploadOnclould = async (fileName, userphoto) => {
   let url = null;
   try {
     const res = await cloudinary.uploader.upload(filePath, {
-      resource_type: 'auto'
+      resource_type: 'image'
     });
 
     //resize the image if it is avatar image
