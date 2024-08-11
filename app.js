@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express')
+const morgan = require('morgan')
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
 const artistRoute = require('./routes/artist.route')
@@ -8,6 +9,10 @@ const userRoute = require('./routes/user.route')
 const globalErrorHandler = require('./middlewares/globalErrorHandler')
 
 const app = express();
+
+if(process.env.NODE_ENV ==='dev'){
+  app.use(morgan('dev'))
+}
 
 const corsOption = {
     origin: "*",
