@@ -1,7 +1,8 @@
 const { promisify } = require('util');
-
+const APPError = require('../utils/ErrorHandler')
 const User = require('../models/user.model');
 const Artist = require('../models/artist.model');
+const jwt = require('jsonwebtoken')
 
 const user_protect = async (req, res, next) => {
   /**
@@ -63,15 +64,10 @@ const user_protect = async (req, res, next) => {
 
 
 const artist_protect = async (req, res, next) => {
-  /**
-   * 1) Getting token and check of it's there
-   * 2)verification of token
-   * 3)chek if user still exists
-   * 4)check if user changes password after token was issued
-   *    */
+  
 
   try {
-    let token;
+    let token = null;
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith('Bearer')

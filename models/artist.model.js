@@ -1,78 +1,87 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const ErrorHandler = require('../utils/ErrorHandler')
+const ErrorHandler = require('../utils/ErrorHandler');
 
-const artistSchema = new Schema({
-  artistName: {
-    type: String,
-  },
-  email: {
-    type: String,
-    require: [true, 'Email is mandatory'],
-    unique:true,
-  },
-  password: {
-    type: String,
-    require: [true, 'password is mandatory'],
-    select: false,
-  },
-  firstName: {
-    type: String,
-    required: [true, 'first name is required'],
-  },
-  lastName: {
-    type: String,
-    required: [true, 'last name is required'],
-  },
-  avatar: {
-    type: String,
-  },
-  contactNo: {
-    type: String,
-  },
-  altContactNo: {
-    type: String,
-  },
-  address: {
-    addressLine1: {
+const artistSchema = new Schema(
+  {
+    artistName: {
       type: String,
     },
-    addressLine2: {
+    email: {
+      type: String,
+      require: [true, 'Email is mandatory'],
+      unique: true,
+    },
+    password: {
+      type: String,
+      require: [true, 'password is mandatory'],
+      select: false,
+    },
+    firstName: {
+      type: String,
+      required: [true, 'first name is required'],
+    },
+    lastName: {
+      type: String,
+      required: [true, 'last name is required'],
+    },
+    avatar: {
       type: String,
     },
-    city: {
+    contactNo: {
       type: String,
     },
-    state: {
+    altContactNo: {
       type: String,
     },
-    zipCode: {
-      type: String,
+    address: {
+      addressLine1: {
+        type: String,
+      },
+      addressLine2: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      zipCode: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
     },
-    country: {
-      type: String,
+    bankDetails: {
+      accountNo: {
+        type: String,
+      },
+      ifscCode: {
+        type: String,
+      },
+      accountHolderName: {
+        type: String,
+      },
+      checkBook: {
+        type: String,
+      },
+      isBankDetailsEdited: {
+        type: Boolean,
+        default: false,
+      },
     },
   },
-  bankDetails: {
-    accountNo: {
-      type: String,
-    },
-    ifscCode: {
-      type: String,
-    },
-    accountHolderName: {
-      type: String,
-    },
-    checkBook: {
-      type: String,
-    },
-    isBankDetailsEdited: {
-      type: Boolean,
-      default: false,
-    },
-  },
-}, {timestamps: true});
+  { timestamps: true, toJSON: {virtuals: true}, toObject: {virtuals: true }}
+);
+
+artistSchema.virtual('myArt', {
+  ref: 'Product',
+  foreignField: 'artist',
+  localField: '_id',
+});
 
 artistSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();

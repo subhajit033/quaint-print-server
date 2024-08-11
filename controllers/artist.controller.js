@@ -1,8 +1,8 @@
 const Artist = require('../models/artist.model');
 const successResponse = require('../utils/sucessResponse');
 const APPError = require('../utils/ErrorHandler');
-const bcrypt = require('bcryptjs')
-const {createAndSendToken} = require('../shared/auth.shared')
+const bcrypt = require('bcryptjs');
+const { createAndSendToken } = require('../shared/auth.shared');
 
 const artistSignUp = async (req, res, next) => {
   try {
@@ -18,7 +18,7 @@ const artistSignUp = async (req, res, next) => {
   }
 };
 
-const artistLogin = async () => {
+const artistLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -35,10 +35,20 @@ const artistLogin = async () => {
     }
 
     //console.log(user);
-    createAndSendToken(user, 200, res, 'artist_access_token', 'artist' );
+    createAndSendToken(user, 200, res, 'artist_access_token', 'artist');
   } catch (error) {
     next(new APPError(error.message, 400));
   }
 };
 
-module.exports = { artistSignUp, artistLogin };
+const getMyArts = async (req, res, next) => {
+  try {
+    const myArts = await Artist.findById(req?.artist?.id).populate('myArt');
+
+    successResponse(res, 200, myArts);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
+
+module.exports = { artistSignUp, artistLogin, getMyArts };
