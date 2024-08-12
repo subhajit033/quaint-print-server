@@ -1,4 +1,5 @@
 const Admin = require('../models/admin.model');
+const Product = require('../models/product.model');
 const successResponse = require('../utils/sucessResponse');
 const APPError = require('../utils/ErrorHandler');
 const bcrypt = require('bcryptjs');
@@ -26,4 +27,20 @@ const adminLogin = async (req, res, next) => {
   }
 };
 
-module.exports = { adminLogin };
+const approveProduct = async (req, res, next) => {
+  const { productId } = req.params;
+  const { price } = req.body;
+  if (!price || price === 0) {
+    return next(new APPError('Please set price for this product', 400));
+  }
+  try {
+    const approvedPdt = await Product.findByIdAndUpdate(productId, {...req.body, isApproved: true}, {
+      new: true,
+    });
+    successResponse(res, 200, approvedPdt);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
+
+module.exports = { adminLogin, approveProduct };

@@ -24,7 +24,7 @@ const productSchema = new Schema({
   price: {
     type: String,
     required: true,
-    default: '999',
+    default: '0',
   },
   isApproved: {
     type: Boolean,
