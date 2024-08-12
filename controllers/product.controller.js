@@ -23,6 +23,15 @@ const updateArt = async (req, res, next) => {
     next(new APPError(e.message, 400));
   }
 };
+const deleteArt = async (req, res, next) => {
+  const { artId } = req.params;
+  try {
+    const updatedArt = await Product.findByIdAndDelete(artId);
+    successResponse(res, 203, updatedArt);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
 
 const getAllProduct = async (req, res, next) => {
   try {
@@ -34,4 +43,4 @@ const getAllProduct = async (req, res, next) => {
   }
 };
 
-module.exports = { uploadArt, getAllProduct, updateArt };
+module.exports = { uploadArt, getAllProduct, updateArt, deleteArt };

@@ -39,7 +39,7 @@ const userLogin = async (req, res, next) => {
     }
 
     //console.log(user);
-    createAndSendToken(user, 200, res);
+    createAndSendToken(user, 200, res, "user_access_token", 'user');
   } catch (error) {
     next(new APPError(error.message, 400));
   }

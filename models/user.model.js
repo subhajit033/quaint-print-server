@@ -75,8 +75,14 @@ const userSchema = new Schema(
       },
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+userSchema.virtual('mycart', {
+  ref: 'Cart',
+  foreignField: 'user',
+  localField: '_id',
+});
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();

@@ -13,7 +13,7 @@ const user_protect = async (req, res, next) => {
    *    */
 
   try {
-    let token;
+    let token = null;
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith('Bearer')
@@ -22,7 +22,7 @@ const user_protect = async (req, res, next) => {
       //the second one is token and we need the token only thats why we implemented split function
       token = req.headers.authorization.split(' ')[1];
     } else if (req.cookies.user_access_token) {
-      token = req.cookies.jwt;
+      token = req.cookies.user_access_token;
     }
     if (!token) {
       return next(

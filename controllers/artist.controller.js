@@ -12,7 +12,7 @@ const artistSignUp = async (req, res, next) => {
       return next(new APPError('Artist alrady exist with this email', 400));
     }
     const artist = await Artist.create(req?.body);
-    successResponse(res, 201, artist);
+    createAndSendToken(artist, 200, res, 'artist_access_token', 'artist');
   } catch (e) {
     next(new APPError(e.message, 400));
   }
@@ -51,4 +51,19 @@ const getMyArts = async (req, res, next) => {
   }
 };
 
-module.exports = { artistSignUp, artistLogin, getMyArts };
+const editArtistDetails = async (req, res, next) => {
+  try {
+    const editedArtist = await Artist.findByIdAndUpdate(
+      req?.artist?.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    successResponse(res, 200, editedArtist);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
+
+module.exports = { artistSignUp, artistLogin, getMyArts, editArtistDetails };
