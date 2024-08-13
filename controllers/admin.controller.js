@@ -4,6 +4,7 @@ const successResponse = require('../utils/sucessResponse');
 const APPError = require('../utils/ErrorHandler');
 const bcrypt = require('bcryptjs');
 const { createAndSendToken } = require('../shared/auth.shared');
+const { sendMail } = require('../utils/email');
 
 const adminLogin = async (req, res, next) => {
   try {
@@ -34,9 +35,22 @@ const approveProduct = async (req, res, next) => {
     return next(new APPError('Please set price for this product', 400));
   }
   try {
-    const approvedPdt = await Product.findByIdAndUpdate(productId, {...req.body, isApproved: true}, {
-      new: true,
-    });
+    const approvedPdt = await Product.findByIdAndUpdate(
+      productId,
+      { ...req.body, isApproved: true },
+      {
+        new: true,
+      }
+    ).populate('artist');
+
+    if (!approvedPdt) {
+      return next(new APPError('No product found', 404));
+    }
+    await sendMail(
+      approvedPdt?.artist?.email,
+      `Approval of your art ${approvedPdt?.title}`,
+      'Your Product is approved by admin'
+    );
     successResponse(res, 200, approvedPdt);
   } catch (e) {
     next(new APPError(e.message, 400));

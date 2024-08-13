@@ -31,6 +31,12 @@ const productSchema = new Schema({
     required: true,
     default: false,
   },
+  status:{
+    type: String,
+    required: true,
+    default: 'new'
+
+  },
   artist: {
     type: Schema.Types.ObjectId,
     required: true,

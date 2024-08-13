@@ -15,7 +15,7 @@ const uploadArt = async (req, res, next) => {
 const updateArt = async (req, res, next) => {
   const { artId } = req.params;
   try {
-    const updatedArt = await Product.findByIdAndUpdate(artId, req.body, {
+    const updatedArt = await Product.findByIdAndUpdate(artId, {...req.body, status: 'updated', isApproved: false}, {
       new: true,
     });
     successResponse(res, 200, updatedArt);
