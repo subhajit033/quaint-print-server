@@ -19,6 +19,7 @@ const artistSignUp = async (req, res, next) => {
 };
 
 const artistLogin = async (req, res, next) => {
+  console.log('artist llogin runs');
   try {
     const { email, password } = req.body;
 
