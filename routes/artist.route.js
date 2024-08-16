@@ -5,20 +5,22 @@ const {
   artistSignUp,
   artistLogin,
   getMyArts,
-  editArtistDetails
+  editArtistDetails,
+  isArtistLoggedIn
 } = require('../controllers/artist.controller');
 
 const router = Router();
 
 router.post('/signup', artistSignUp);
 router.post('/login', artistLogin);
+router.get('/is-artist-loggedin', isArtistLoggedIn);
 
 router.use(artist_protect);
 
 router.post('/upload-art', uploadArt);
 router.patch('/update-art/:artId', updateArt);
 router.patch('/delete-art/:artId', deleteArt);
-router.patch('/edit-deatils', editArtistDetails);
+router.patch('/edit-details', editArtistDetails);
 router.get('/my-arts', getMyArts);
 
 router.route('/').get((req, res) => {

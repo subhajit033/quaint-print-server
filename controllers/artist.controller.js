@@ -1,8 +1,11 @@
 const Artist = require('../models/artist.model');
 const successResponse = require('../utils/sucessResponse');
+const {promisify} = require('util')
+const jwt = require('jsonwebtoken')
 const APPError = require('../utils/ErrorHandler');
 const bcrypt = require('bcryptjs');
 const { createAndSendToken } = require('../shared/auth.shared');
+require('dotenv').config();
 
 const artistSignUp = async (req, res, next) => {
   try {
@@ -53,6 +56,7 @@ const getMyArts = async (req, res, next) => {
 };
 
 const editArtistDetails = async (req, res, next) => {
+  req.body.bankDetails.isBankDetailsEdited = true;
   try {
     const editedArtist = await Artist.findByIdAndUpdate(
       req?.artist?.id,
@@ -67,4 +71,35 @@ const editArtistDetails = async (req, res, next) => {
   }
 };
 
-module.exports = { artistSignUp, artistLogin, getMyArts, editArtistDetails };
+const isArtistLoggedIn = async (req, res, next) => {
+  try {
+    if (req.cookies.artist_access_token) {
+      const verifyAsync = promisify(jwt.verify);
+
+      const decoded = await verifyAsync(req.cookies.artist_access_token, process.env.JWT_SECRET);
+      const currentUser = await Artist.findById(decoded.id);
+      if (!currentUser) {
+        return next(new APPError('No one user found with this Id', 404));
+      }
+
+      if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next(new APPError('Please log in to the app', 403));
+      }
+
+      //There is a logged in users
+      res.status(200).json({
+        status: 'success',
+        data: {
+          user: currentUser
+        }
+      });
+    } else {
+      throw new Error('No cookie found');
+    }
+  } catch (err) {
+    next(new APPError(err.message, 400));
+  }
+};
+
+
+module.exports = { artistSignUp, artistLogin, getMyArts, editArtistDetails, isArtistLoggedIn };
