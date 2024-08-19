@@ -43,4 +43,13 @@ const getAllProduct = async (req, res, next) => {
   }
 };
 
-module.exports = { uploadArt, getAllProduct, updateArt, deleteArt };
+const getSingleProduct = async (req, res, next)=>{
+  try {
+    const data = await Product.findById(req.params.productId).populate('artist')
+    successResponse(res, 200, data)
+  } catch (error) {
+    next(new APPError(error.message, 400))
+  }
+}
+
+module.exports = { uploadArt, getAllProduct, updateArt, deleteArt, getSingleProduct };

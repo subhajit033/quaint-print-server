@@ -57,4 +57,15 @@ const approveProduct = async (req, res, next) => {
   }
 };
 
-module.exports = { adminLogin, approveProduct };
+const getUnapprovedpdt = async (req, res, next)=>{
+ try {
+   const products = await Product.find({isApproved: false}).populate('artist')
+   successResponse(res, 200, products)
+ } catch (error) {
+  next(new APPError(error.message, 400))
+ }
+
+
+}
+
+module.exports = { adminLogin, approveProduct, getUnapprovedpdt };

@@ -9,6 +9,6 @@ router.get("/", (req, res)=>{
     })
 })
 
-router.post('/uploadart', upload.single('uploadArt'), uploadToClould)
+router.post('/upload-asset', upload.single('uploadArt'), uploadToClould)
 
 module.exports = router;

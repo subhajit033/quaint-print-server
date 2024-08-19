@@ -10,6 +10,7 @@ cloudinary.config({
 });
 
 const uploadOnclould = async (fileName, userphoto) => {
+  // console.log(fileName);
   if (!fileName) return null;
 
   const filePath = path.join(
@@ -25,6 +26,7 @@ const uploadOnclould = async (fileName, userphoto) => {
     const res = await cloudinary.uploader.upload(filePath, {
       resource_type: 'image'
     });
+    // console.log(res);
 
     //resize the image if it is avatar image
     if (userphoto) {
@@ -44,4 +46,14 @@ const uploadOnclould = async (fileName, userphoto) => {
   }
 };
 
-module.exports = { uploadOnclould };
+const uriToClold = async (imgSrc)=>{
+  //let url = null;
+  try {
+    const res = await cloudinary.uploader.upload(imgSrc);
+    console.log(res.url);
+  }catch(e){
+    console.log(e);
+  }
+}
+
+module.exports = { uploadOnclould , uriToClold};

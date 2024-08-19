@@ -8,6 +8,7 @@ const uploadRoute = require('./routes/upload.route');
 const userRoute = require('./routes/user.route');
 const adminRoute = require('./routes/admin.route');
 const globalErrorHandler = require('./middlewares/globalErrorHandler');
+const { uriToClold } = require('./utils/cloudinary');
 
 const app = express();
 
@@ -23,9 +24,26 @@ const corsOption = {
 
 app.use(cors(corsOption));
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(cookieParser());
+
+app.post('/base-image', async (req, res) => {
+  // console.log(req.body);
+  try {
+    const l = await uriToClold(req.body?.imgSrc);
+    console.log(l);
+    res.status(200).json({
+      status: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      status: false,
+    });
+  }
+});
 
 app.use('/api/v1/artists', artistRoute);
 app.use('/api/v1/uploads', uploadRoute);

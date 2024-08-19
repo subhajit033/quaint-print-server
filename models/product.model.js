@@ -23,7 +23,7 @@ const productSchema = new Schema({
   },
   price: {
     type: String,
-    required: true,
+    // required: true,
     default: '0',
   },
   isApproved: {
