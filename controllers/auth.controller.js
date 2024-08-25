@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { createAndSendToken } = require('../shared/auth.shared');
 const crypto = require('crypto');
+const { promisify } = require('util');
+require('dotenv').config();
 
 const userSignup = async (req, res, next) => {
   try {
@@ -39,11 +41,60 @@ const userLogin = async (req, res, next) => {
     }
 
     //console.log(user);
-    createAndSendToken(user, 200, res, "user_access_token", 'user');
+    createAndSendToken(user, 200, res, 'user_access_token', 'user');
   } catch (error) {
     next(new APPError(error.message, 400));
   }
 };
 
+const isUserLoggedin = async (req, res, next) => {
+  try {
+    if (req.cookies.user_access_token) {
+      const verifyAsync = promisify(jwt.verify);
 
-module.exports = { userSignup, userLogin };
+      const decoded = await verifyAsync(
+        req.cookies.user_access_token,
+        process.env.JWT_SECRET
+      );
+      const currentUser = await User.findById(decoded.id);
+      if (!currentUser) {
+        return next(new APPError('No one user found with this Id', 404));
+      }
+
+      if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next(new APPError('Please log in to the app', 403));
+      }
+
+      //There is a logged in users
+      res.status(200).json({
+        status: 'success',
+        data: {
+          user: currentUser,
+        },
+      });
+    } else {
+      throw new Error('No cookie found');
+    }
+  } catch (err) {
+    next(new APPError(err.message, 400));
+  }
+};
+
+ const userSignInWithGoogle = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      createAndSendToken(user, 200, res, 'user_access_token', 'user');
+    } else {
+      const generatedPassword = Math.random().toString(36).slice(-8);
+      req.body.password = generatedPassword;
+      const newUser = await User.create(req.body);
+      createAndSendToken(newUser, 201, res, 'user_access_token', 'user');
+      
+    }
+  } catch (error) {
+    next(new APPError(error.message, 400));
+  }
+};
+
+module.exports = { userSignup, userLogin, isUserLoggedin , userSignInWithGoogle};
