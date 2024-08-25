@@ -17,8 +17,9 @@ const cartSchema = new Schema(
       default: 1,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
 
 const Cart = model('Cart', cartSchema);
 

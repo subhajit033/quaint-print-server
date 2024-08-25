@@ -3,6 +3,7 @@ const { userLogin, userSignup, isUserLoggedin, userSignInWithGoogle } = require(
 const { user_protect } = require('../middlewares/auth.middleware');
 const {editUserDetails} = require('../controllers/user.controller')
 const {addTocart, deleteFromCart, getCartItem} = require('../controllers/cart.controller')
+const {getAllProduct} = require('../controllers/product.controller')
 
 const router = Router();
 
@@ -11,6 +12,9 @@ router.post('/signup', userSignup);
 router.post('/login', userLogin);
 router.post('/google', userSignInWithGoogle);
 router.get('/is-user-loggedin', isUserLoggedin);
+
+//produvts
+router.get('/get-all-products', getAllProduct);
 
 router.use(user_protect);
 

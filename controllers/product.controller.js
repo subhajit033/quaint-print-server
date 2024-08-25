@@ -35,7 +35,7 @@ const deleteArt = async (req, res, next) => {
 
 const getAllProduct = async (req, res, next) => {
   try {
-    const products = Product.find({ isApproved: { $ne: false } });
+    const products = await Product.find();
 
     successResponse(res, 200, products, { length: products.length });
   } catch (e) {

@@ -15,10 +15,8 @@ const addTocart = async (req, res, next) => {
   }
 };
 
-
 const deleteFromCart = async (req, res, next) => {
   const { productId } = req.params;
-  
 
   try {
     const deletedItem = await Cart.findByIdAndDelete(productId);
@@ -28,14 +26,16 @@ const deleteFromCart = async (req, res, next) => {
   }
 };
 
-const getCartItem = async (req, res, next)=>{
-    try {
-        const cartItem = await User.findById(req?.user?.id).populate('mycart')
-        successResponse(res, 200, cartItem);
-    } catch (e) {
-        next(new APPError(e.message, 400))
-        
-    }
-}
+const getCartItem = async (req, res, next) => {
+  try {
+    const cartItem = await Cart.find({ user: req?.user?.id }).populate({
+      path: 'product',
+      select: ['title', '_id', 'price', 'picture'],
+    });
+    successResponse(res, 200, cartItem);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
 
-module.exports = {addTocart, deleteFromCart, getCartItem}
+module.exports = { addTocart, deleteFromCart, getCartItem };
