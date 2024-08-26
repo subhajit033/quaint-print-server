@@ -38,4 +38,18 @@ const getCartItem = async (req, res, next) => {
   }
 };
 
-module.exports = { addTocart, deleteFromCart, getCartItem };
+const updateCart = async (req, res, next) => {
+  const { cartId } = req.params;
+  try {
+    const cartItem = await Cart.findByIdAndUpdate(cartId, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      status: true,
+    });
+  } catch (error) {
+    next(new APPError(error.message, 400));
+  }
+};
+
+module.exports = { addTocart, deleteFromCart, getCartItem, updateCart };

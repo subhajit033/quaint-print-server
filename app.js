@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'dev') {
 
 const corsOption = {
   //it is not allowed to pass any type of cookie or authentication header when origin sets to '*" you have to be specified"
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://192.168.0.109:5173'],
   credentials: true,
 };
 

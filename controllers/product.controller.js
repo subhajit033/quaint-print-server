@@ -15,9 +15,13 @@ const uploadArt = async (req, res, next) => {
 const updateArt = async (req, res, next) => {
   const { artId } = req.params;
   try {
-    const updatedArt = await Product.findByIdAndUpdate(artId, {...req.body, status: 'updated', isApproved: false}, {
-      new: true,
-    });
+    const updatedArt = await Product.findByIdAndUpdate(
+      artId,
+      { ...req.body, status: 'updated', isApproved: false },
+      {
+        new: true,
+      }
+    );
     successResponse(res, 200, updatedArt);
   } catch (e) {
     next(new APPError(e.message, 400));
@@ -43,13 +47,21 @@ const getAllProduct = async (req, res, next) => {
   }
 };
 
-const getSingleProduct = async (req, res, next)=>{
+const getSingleProduct = async (req, res, next) => {
   try {
-    const data = await Product.findById(req.params.productId).populate('artist')
-    successResponse(res, 200, data)
+    const data = await Product.findById(req.params.productId).populate(
+      'artist'
+    );
+    successResponse(res, 200, data);
   } catch (error) {
-    next(new APPError(error.message, 400))
+    next(new APPError(error.message, 400));
   }
-}
+};
 
-module.exports = { uploadArt, getAllProduct, updateArt, deleteArt, getSingleProduct };
+module.exports = {
+  uploadArt,
+  getAllProduct,
+  updateArt,
+  deleteArt,
+  getSingleProduct,
+};
