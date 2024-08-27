@@ -1,7 +1,7 @@
 const Artist = require('../models/artist.model');
 const successResponse = require('../utils/sucessResponse');
-const {promisify} = require('util')
-const jwt = require('jsonwebtoken')
+const { promisify } = require('util');
+const jwt = require('jsonwebtoken');
 const APPError = require('../utils/ErrorHandler');
 const bcrypt = require('bcryptjs');
 const { createAndSendToken } = require('../shared/auth.shared');
@@ -76,7 +76,10 @@ const isArtistLoggedIn = async (req, res, next) => {
     if (req.cookies.artist_access_token) {
       const verifyAsync = promisify(jwt.verify);
 
-      const decoded = await verifyAsync(req.cookies.artist_access_token, process.env.JWT_SECRET);
+      const decoded = await verifyAsync(
+        req.cookies.artist_access_token,
+        process.env.JWT_SECRET
+      );
       const currentUser = await Artist.findById(decoded.id);
       if (!currentUser) {
         return next(new APPError('No one user found with this Id', 404));
@@ -90,8 +93,8 @@ const isArtistLoggedIn = async (req, res, next) => {
       res.status(200).json({
         status: 'success',
         data: {
-          user: currentUser
-        }
+          user: currentUser,
+        },
       });
     } else {
       throw new Error('No cookie found');
@@ -101,5 +104,27 @@ const isArtistLoggedIn = async (req, res, next) => {
   }
 };
 
+const artistSignInWithGoogle = async (req, res, next) => {
+  try {
+    const user = await Artist.findOne({ email: req.body.email });
+    if (user) {
+      createAndSendToken(user, 200, res, 'artist_access_token', 'artist');
+    } else {
+      const generatedPassword = Math.random().toString(36).slice(-8);
+      req.body.password = generatedPassword;
+      const newUser = await Artist.create(req.body);
+      createAndSendToken(newUser, 201, res, 'artist_access_token', 'artist');
+    }
+  } catch (error) {
+    next(new APPError(error.message, 400));
+  }
+};
 
-module.exports = { artistSignUp, artistLogin, getMyArts, editArtistDetails, isArtistLoggedIn };
+module.exports = {
+  artistSignUp,
+  artistLogin,
+  getMyArts,
+  editArtistDetails,
+  isArtistLoggedIn,
+  artistSignInWithGoogle,
+};

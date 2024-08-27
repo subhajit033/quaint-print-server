@@ -1,18 +1,24 @@
 const { Router } = require('express');
 const { artist_protect } = require('../middlewares/auth.middleware');
-const { uploadArt, updateArt, deleteArt } = require('../controllers/product.controller');
+const {
+  uploadArt,
+  updateArt,
+  deleteArt,
+} = require('../controllers/product.controller');
 const {
   artistSignUp,
   artistLogin,
   getMyArts,
   editArtistDetails,
-  isArtistLoggedIn
+  isArtistLoggedIn,
+  artistSignInWithGoogle,
 } = require('../controllers/artist.controller');
 
 const router = Router();
 
 router.post('/signup', artistSignUp);
 router.post('/login', artistLogin);
+router.post('/google', artistSignInWithGoogle);
 router.get('/is-artist-loggedin', isArtistLoggedIn);
 
 router.use(artist_protect);
