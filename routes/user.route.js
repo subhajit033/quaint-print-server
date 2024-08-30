@@ -6,6 +6,11 @@ const {
   userSignInWithGoogle,
 } = require('../controllers/auth.controller');
 const { user_protect } = require('../middlewares/auth.middleware');
+const {
+  getBanner,
+  getBestDeal,
+  getBestSeller,
+} = require('../controllers/content.controller');
 const { editUserDetails } = require('../controllers/user.controller');
 const {
   addTocart,
@@ -24,6 +29,11 @@ router.get('/is-user-loggedin', isUserLoggedin);
 
 //produvts
 router.get('/get-all-products', getAllProduct);
+
+//content public routes
+router.get('/banner', getBanner);
+router.get('/best-deals', getBestDeal);
+router.get('/best-seller', getBestSeller);
 
 router.use(user_protect);
 
