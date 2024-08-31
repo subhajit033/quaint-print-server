@@ -2,6 +2,7 @@ const Banner = require('../models/banner.model');
 const BestDeal = require('../models/bestDeals.model');
 const BestSeller = require('../models/bestSeller.model');
 const APPError = require('../utils/ErrorHandler');
+const successResponse = require('../utils/sucessResponse');
 const sucessResponse = require('../utils/sucessResponse');
 
 const uploadBanner = async (req, res, next) => {
@@ -53,6 +54,34 @@ const getBestSeller = async (req, res, next) => {
   }
 };
 
+const deleteBanner = async (req, res, next) => {
+  const { pdtId } = req.params;
+  try {
+    const pdt = await Banner.findByIdAndDelete(pdtId);
+    successResponse(res, 203, null);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
+const deleteBestDelas = async (req, res, next) => {
+  const { pdtId } = req.params;
+  try {
+    const pdt = await BestDeal.findByIdAndDelete(pdtId);
+    successResponse(res, 203, null);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
+const deleteBestSeller = async (req, res, next) => {
+  const { pdtId } = req.params;
+  try {
+    const pdt = await BestSeller.findByIdAndDelete(pdtId);
+    successResponse(res, 203, null);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
+
 module.exports = {
   uploadBanner,
   uploadBestDeal,
@@ -60,4 +89,7 @@ module.exports = {
   getBanner,
   getBestDeal,
   getBestSeller,
+  deleteBanner,
+  deleteBestDelas,
+  deleteBestSeller,
 };

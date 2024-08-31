@@ -12,6 +12,9 @@ const {
   getBanner,
   getBestDeal,
   getBestSeller,
+  deleteBanner,
+  deleteBestDelas,
+  deleteBestSeller,
 } = require('../controllers/content.controller');
 const {
   admin_protect,
@@ -33,5 +36,8 @@ router.get('/product/:productId', getSingleProduct);
 router.route('/banner').get(getBanner).post(uploadBanner);
 router.route('/best-deal').get(getBestDeal).post(uploadBestDeal);
 router.route('/best-seller').get(getBestSeller).post(uploadBestSeller);
+router.delete('/banner/:pdtId', deleteBanner);
+router.delete('/best-deal/:pdtId', deleteBestDelas);
+router.delete('/best-seller/:pdtId', deleteBestSeller);
 
 module.exports = router;
