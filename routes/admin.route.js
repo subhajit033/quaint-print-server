@@ -31,7 +31,7 @@ router.patch(
 );
 router.get('/product/:productId', getSingleProduct);
 router.route('/banner').get(getBanner).post(uploadBanner);
-router.post('/best-deal').get(getBestDeal).post(uploadBestDeal);
-router.post('/best-seller').get(getBestSeller).post(uploadBestSeller);
+router.route('/best-deal').get(getBestDeal).post(uploadBestDeal);
+router.route('/best-seller').get(getBestSeller).post(uploadBestSeller);
 
 module.exports = router;
