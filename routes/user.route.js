@@ -32,7 +32,7 @@ router.get('/get-all-products', getAllProduct);
 
 //content public routes
 router.get('/banner', getBanner);
-router.get('/best-deals', getBestDeal);
+router.get('/best-deal', getBestDeal);
 router.get('/best-seller', getBestSeller);
 
 router.use(user_protect);
