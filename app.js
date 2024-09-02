@@ -24,10 +24,13 @@ const corsOption = {
     'https://quaintprint-artist.vercel.app/',
     'https://quaintprint-admin.vercel.app/',
   ],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   credentials: true,
 };
 
 app.use(cors(corsOption));
+
+app.options('*', cors(corsOption));
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
