@@ -20,9 +20,9 @@ const corsOption = {
   //it is not allowed to pass any type of cookie or authentication header when origin sets to '*" you have to be specified"
   origin: [
     'http://localhost:5173',
-    'https://quaintprint-main.vercel.app/',
-    'https://quaintprint-artist.vercel.app/',
-    'https://quaintprint-admin.vercel.app/',
+    'https://quaintprint-main.vercel.app',
+    'https://quaintprint-artist.vercel.app',
+    'https://quaintprint-admin.vercel.app',
   ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   credentials: true,
