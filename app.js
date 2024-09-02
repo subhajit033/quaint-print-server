@@ -25,6 +25,8 @@ const corsOption = {
     'https://quaintprint-admin.vercel.app',
   ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  preflightContinue: true,
+  optionsSuccessStatus: 204,
   credentials: true,
 };
 
