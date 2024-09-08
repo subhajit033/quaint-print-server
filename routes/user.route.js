@@ -40,9 +40,9 @@ router.use(user_protect);
 router.patch('/edit-details', editUserDetails);
 
 //cart related
-router.post('/add-to-cart/:productId', addTocart);
-router.patch('/cart/:cartId', updateCart);
-router.delete('/delete-from-cart/:productId', deleteFromCart);
+router.post('/add-to-cart', addTocart);
+router.route('/cart/:cartId').patch(updateCart).delete(deleteFromCart);
+// router.delete('/delete-from-cart/:productId', deleteFromCart);
 router.get('/get-cart-item', getCartItem);
 
 module.exports = router;
