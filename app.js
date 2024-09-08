@@ -7,6 +7,7 @@ const artistRoute = require('./routes/artist.route');
 const uploadRoute = require('./routes/upload.route');
 const userRoute = require('./routes/user.route');
 const adminRoute = require('./routes/admin.route');
+const paymentRoute = require('./routes/payment.route');
 const globalErrorHandler = require('./middlewares/globalErrorHandler');
 const { uriToClold } = require('./utils/cloudinary');
 
@@ -59,6 +60,7 @@ app.use('/api/v1/artists', artistRoute);
 app.use('/api/v1/uploads', uploadRoute);
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/admin', adminRoute);
+app.use('/api/v1/payments', paymentRoute);
 
 app.use(globalErrorHandler);
 
