@@ -7,6 +7,6 @@ const {
 const router = Router();
 
 router.post('/create-order', createOrder);
-router.post('/verify-order', verifyOrder);
+router.post('/verify-payment', verifyOrder);
 
 module.exports = router;
