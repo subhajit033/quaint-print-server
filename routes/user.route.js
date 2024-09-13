@@ -19,6 +19,7 @@ const {
   updateCart,
 } = require('../controllers/cart.controller');
 const { getAllProduct } = require('../controllers/product.controller');
+const { getMyOrders } = require('../controllers/order.controller');
 
 const router = Router();
 
@@ -44,5 +45,8 @@ router.post('/add-to-cart', addTocart);
 router.route('/cart/:cartId').patch(updateCart).delete(deleteFromCart);
 // router.delete('/delete-from-cart/:productId', deleteFromCart);
 router.get('/get-cart-item', getCartItem);
+
+//order related
+router.get('/get-my-orders', getMyOrders);
 
 module.exports = router;
