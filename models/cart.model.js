@@ -25,6 +25,10 @@ const cartSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

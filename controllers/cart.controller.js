@@ -17,7 +17,9 @@ const deleteFromCart = async (req, res, next) => {
   const { cartId } = req.params;
 
   try {
-    const deletedItem = await Cart.findByIdAndDelete(cartId);
+    const deletedItem = await Cart.findByIdAndUpdate(cartId, {
+      isDeleted: true,
+    });
     successResponse(res, 203, deletedItem);
   } catch (e) {
     next(new APPError(e.message, 400));
@@ -26,7 +28,7 @@ const deleteFromCart = async (req, res, next) => {
 
 const getCartItem = async (req, res, next) => {
   try {
-    const cartItem = await Cart.find({ user: req?.user?.id });
+    const cartItem = await Cart.find({ user: req?.user?.id, isDeleted: false });
     successResponse(res, 200, cartItem);
   } catch (e) {
     next(new APPError(e.message, 400));
