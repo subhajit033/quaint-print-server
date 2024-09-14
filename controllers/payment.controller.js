@@ -61,7 +61,7 @@ const verifyOrder = async (req, res, next) => {
           }
         }
 
-        res.redirect(`http://localhost:5173/payment/success`);
+        res.redirect(`https://quaintprint-main.vercel.app/payment/success`);
 
         // const saveuser = await User.findById(saveduser._id).select('-__v');
       } catch (error) {
