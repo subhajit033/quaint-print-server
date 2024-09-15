@@ -5,6 +5,7 @@ const APPError = require('../utils/ErrorHandler');
 const bcrypt = require('bcryptjs');
 const { createAndSendToken } = require('../shared/auth.shared');
 const { sendMail } = require('../utils/email');
+const Enquiry = require('../models/enquiry.model');
 
 const adminLogin = async (req, res, next) => {
   try {
@@ -110,4 +111,29 @@ const logoutAdmin = async (req, res, next) => {
     status: true,
   });
 };
-module.exports = { adminLogin, approveProduct, getUnapprovedpdt, logoutAdmin };
+
+const addEnquiry = async (req, res, next) => {
+  try {
+    const enq = await Enquiry.create(req.body);
+    successResponse(res, 201, enq);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
+
+const getEnquiry = async (req, res, next) => {
+  try {
+    const enq = await Enquiry.find();
+    successResponse(res, 200, enq);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
+module.exports = {
+  adminLogin,
+  approveProduct,
+  getUnapprovedpdt,
+  logoutAdmin,
+  addEnquiry,
+  getEnquiry,
+};

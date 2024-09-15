@@ -4,6 +4,8 @@ const {
   approveProduct,
   getUnapprovedpdt,
   logoutAdmin,
+  addEnquiry,
+  getEnquiry,
 } = require('../controllers/admin.controller');
 const { getSingleProduct } = require('../controllers/product.controller');
 const {
@@ -25,6 +27,9 @@ const router = Router();
 
 router.post('/login', adminLogin);
 router.get('/logout', logoutAdmin);
+
+//enquires
+router.route('/enquiry').post(addEnquiry).get(getEnquiry);
 
 router.use(admin_protect);
 
