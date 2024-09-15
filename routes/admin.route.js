@@ -3,6 +3,7 @@ const {
   adminLogin,
   approveProduct,
   getUnapprovedpdt,
+  logoutAdmin,
 } = require('../controllers/admin.controller');
 const { getSingleProduct } = require('../controllers/product.controller');
 const {
@@ -23,6 +24,7 @@ const {
 const router = Router();
 
 router.post('/login', adminLogin);
+router.get('/logout', logoutAdmin);
 
 router.use(admin_protect);
 

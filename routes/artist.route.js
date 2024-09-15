@@ -12,6 +12,7 @@ const {
   editArtistDetails,
   isArtistLoggedIn,
   artistSignInWithGoogle,
+  logoutArtist,
 } = require('../controllers/artist.controller');
 
 const router = Router();
@@ -20,6 +21,7 @@ router.post('/signup', artistSignUp);
 router.post('/login', artistLogin);
 router.post('/google', artistSignInWithGoogle);
 router.get('/is-artist-loggedin', isArtistLoggedIn);
+router.get('/logout', logoutArtist);
 
 router.use(artist_protect);
 

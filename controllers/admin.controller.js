@@ -57,15 +57,57 @@ const approveProduct = async (req, res, next) => {
   }
 };
 
-const getUnapprovedpdt = async (req, res, next)=>{
- try {
-   const products = await Product.find({isApproved: false}).populate('artist')
-   successResponse(res, 200, products)
- } catch (error) {
-  next(new APPError(error.message, 400))
- }
+const getUnapprovedpdt = async (req, res, next) => {
+  try {
+    const products = await Product.find({ isApproved: false }).populate(
+      'artist'
+    );
+    successResponse(res, 200, products);
+  } catch (error) {
+    next(new APPError(error.message, 400));
+  }
+};
 
+const isAdminLoggedin = async (req, res, next) => {
+  try {
+    if (req.cookies.admin_access_token) {
+      const verifyAsync = promisify(jwt.verify);
 
-}
+      const decoded = await verifyAsync(
+        req.cookies.user_access_token,
+        process.env.JWT_SECRET
+      );
+      const currentUser = await User.findById(decoded.id);
+      if (!currentUser) {
+        return next(new APPError('No one user found with this Id', 404));
+      }
 
-module.exports = { adminLogin, approveProduct, getUnapprovedpdt };
+      if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next(new APPError('Please log in to the app', 403));
+      }
+
+      //There is a logged in users
+      res.status(200).json({
+        status: 'success',
+        data: {
+          user: currentUser,
+        },
+      });
+    } else {
+      throw new Error('No cookie found');
+    }
+  } catch (err) {
+    next(new APPError(err.message, 400));
+  }
+};
+
+const logoutAdmin = async (req, res, next) => {
+  res.cookie('admin_access_token', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    status: true,
+  });
+};
+module.exports = { adminLogin, approveProduct, getUnapprovedpdt, logoutAdmin };

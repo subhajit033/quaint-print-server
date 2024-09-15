@@ -120,6 +120,16 @@ const artistSignInWithGoogle = async (req, res, next) => {
   }
 };
 
+const logoutArtist = async (req, res, next) => {
+  res.cookie('artist_access_token', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    status: true,
+  });
+};
+
 module.exports = {
   artistSignUp,
   artistLogin,
@@ -127,4 +137,5 @@ module.exports = {
   editArtistDetails,
   isArtistLoggedIn,
   artistSignInWithGoogle,
+  logoutArtist,
 };

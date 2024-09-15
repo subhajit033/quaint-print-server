@@ -11,4 +11,13 @@ const getMyOrders = async (req, res, next) => {
   }
 };
 
-module.exports = { getMyOrders };
+const getAllorders = async (req, res, next) => {
+  try {
+    const orders = await Order.find().populate(['user', 'product']);
+    successResponse(res, 200, orders);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
+
+module.exports = { getMyOrders, getAllorders };

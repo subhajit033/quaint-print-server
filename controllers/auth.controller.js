@@ -80,7 +80,7 @@ const isUserLoggedin = async (req, res, next) => {
   }
 };
 
- const userSignInWithGoogle = async (req, res, next) => {
+const userSignInWithGoogle = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
@@ -90,11 +90,26 @@ const isUserLoggedin = async (req, res, next) => {
       req.body.password = generatedPassword;
       const newUser = await User.create(req.body);
       createAndSendToken(newUser, 201, res, 'user_access_token', 'user');
-      
     }
   } catch (error) {
     next(new APPError(error.message, 400));
   }
 };
 
-module.exports = { userSignup, userLogin, isUserLoggedin , userSignInWithGoogle};
+const logoutUser = async (req, res, next) => {
+  res.cookie('user_access_token', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    status: true,
+  });
+};
+
+module.exports = {
+  userSignup,
+  userLogin,
+  isUserLoggedin,
+  userSignInWithGoogle,
+  logoutUser,
+};

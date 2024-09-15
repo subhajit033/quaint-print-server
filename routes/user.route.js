@@ -4,6 +4,7 @@ const {
   userSignup,
   isUserLoggedin,
   userSignInWithGoogle,
+  logoutUser,
 } = require('../controllers/auth.controller');
 const { user_protect } = require('../middlewares/auth.middleware');
 const {
@@ -27,6 +28,7 @@ router.post('/signup', userSignup);
 router.post('/login', userLogin);
 router.post('/google', userSignInWithGoogle);
 router.get('/is-user-loggedin', isUserLoggedin);
+router.get('/logout', logoutUser);
 
 //produvts
 router.get('/get-all-products', getAllProduct);
