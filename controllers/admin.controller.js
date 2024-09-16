@@ -6,6 +6,8 @@ const bcrypt = require('bcryptjs');
 const { createAndSendToken } = require('../shared/auth.shared');
 const { sendMail } = require('../utils/email');
 const Enquiry = require('../models/enquiry.model');
+const { sendHTMLMail } = require('../utils/email');
+const { denyProductHtml } = require('../utils/const');
 
 const adminLogin = async (req, res, next) => {
   try {
@@ -60,9 +62,10 @@ const approveProduct = async (req, res, next) => {
 
 const getUnapprovedpdt = async (req, res, next) => {
   try {
-    const products = await Product.find({ isApproved: false }).populate(
-      'artist'
-    );
+    const products = await Product.find({
+      isApproved: false,
+      isDenied: false,
+    }).populate('artist');
     successResponse(res, 200, products);
   } catch (error) {
     next(new APPError(error.message, 400));
@@ -129,6 +132,28 @@ const getEnquiry = async (req, res, next) => {
     next(new APPError(e.message, 400));
   }
 };
+const denyProduct = async (req, res, next) => {
+  const pdtId = req.params.productId;
+  const { email, message } = req.body;
+  try {
+    const pdt = await Product.findByIdAndUpdate(
+      pdtId,
+      { isDenied: true },
+      {
+        new: true,
+      }
+    );
+    if (!pdt) {
+      return next(new APPError('No product found', 404));
+    }
+    await sendHTMLMail(email, 'Product Denied', denyProductHtml(message));
+    res.status(200).json({
+      status: true,
+    });
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
 module.exports = {
   adminLogin,
   approveProduct,
@@ -136,4 +161,5 @@ module.exports = {
   logoutAdmin,
   addEnquiry,
   getEnquiry,
+  denyProduct,
 };

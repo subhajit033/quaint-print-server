@@ -32,6 +32,10 @@ const productSchema = new Schema(
       required: true,
       default: false,
     },
+    isDenied: {
+      type: Boolean,
+      default: false,
+    },
     status: {
       type: String,
       required: true,

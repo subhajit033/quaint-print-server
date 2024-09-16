@@ -37,5 +37,30 @@ const sendMail = async (email, subject, content) => {
     console.log(e);
   }
 };
+const sendHTMLMail = async (email, subject, content) => {
+  try {
+    const message = {
+      from: 'kundusubha@gmail',
+      to: `${email}`,
+      subject: subject,
+      html: content,
+      // text: 'Hi from your nodemailer project'
+    };
+    await transporter.sendMail(message, (error, info) => {
+      if (error) {
+        console.log('Error occurred');
+        console.log(error.message);
+      }
 
-module.exports = {sendMail}
+      console.log('Message sent successfully!');
+      console.log(nodemailer.getTestMessageUrl(info));
+
+      // only needed when using pooled connections
+      // transporter.close();
+    });
+  } catch (error) {
+    console.log(e);
+  }
+};
+
+module.exports = { sendMail, sendHTMLMail };

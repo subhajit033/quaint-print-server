@@ -6,6 +6,7 @@ const {
   logoutAdmin,
   addEnquiry,
   getEnquiry,
+  denyProduct,
 } = require('../controllers/admin.controller');
 const { getSingleProduct } = require('../controllers/product.controller');
 const {
@@ -38,6 +39,11 @@ router.patch(
   '/approve-product/:productId',
   restrictToAdmins('admin'),
   approveProduct
+);
+router.patch(
+  '/deny-product/:productId',
+  restrictToAdmins('admin'),
+  denyProduct
 );
 router.get('/product/:productId', getSingleProduct);
 router.route('/banner').get(getBanner).post(uploadBanner);
