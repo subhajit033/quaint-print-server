@@ -7,6 +7,8 @@ const {
   addEnquiry,
   getEnquiry,
   denyProduct,
+  getApprovedpdt,
+  deleteProduct,
 } = require('../controllers/admin.controller');
 const { getSingleProduct } = require('../controllers/product.controller');
 const {
@@ -35,6 +37,8 @@ router.route('/enquiry').post(addEnquiry).get(getEnquiry);
 router.use(admin_protect);
 
 router.get('/unapproved-pdt', getUnapprovedpdt);
+router.get('/approved-pdt', getApprovedpdt);
+router.delete('/delete-product/:pdtId', deleteProduct);
 router.patch(
   '/approve-product/:productId',
   restrictToAdmins('admin'),

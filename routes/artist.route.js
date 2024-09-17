@@ -27,7 +27,7 @@ router.use(artist_protect);
 
 router.post('/upload-art', uploadArt);
 router.patch('/update-art/:artId', updateArt);
-router.patch('/delete-art/:artId', deleteArt);
+router.delete('/delete-art/:artId', deleteArt);
 router.patch('/edit-details', editArtistDetails);
 router.get('/my-arts', getMyArts);
 

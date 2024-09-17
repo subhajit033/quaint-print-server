@@ -22,11 +22,18 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    price: {
-      type: String,
-      // required: true,
-      default: '0',
-    },
+    price: [
+      {
+        price: {
+          type: String,
+          required: true,
+        },
+        size: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     isApproved: {
       type: Boolean,
       required: true,

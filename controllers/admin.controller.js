@@ -71,6 +71,17 @@ const getUnapprovedpdt = async (req, res, next) => {
     next(new APPError(error.message, 400));
   }
 };
+const getApprovedpdt = async (req, res, next) => {
+  try {
+    const products = await Product.find({
+      isApproved: true,
+      isDenied: false,
+    }).populate('artist');
+    successResponse(res, 200, products);
+  } catch (error) {
+    next(new APPError(error.message, 400));
+  }
+};
 
 const isAdminLoggedin = async (req, res, next) => {
   try {
@@ -113,6 +124,16 @@ const logoutAdmin = async (req, res, next) => {
   res.status(200).json({
     status: true,
   });
+};
+
+const deleteProduct = async (req, res, next) => {
+  try {
+    const { pdtId } = req.params;
+    const pdt = await Product.findByIdAndDelete(pdtId);
+    successResponse(res, 200, pdt);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
 };
 
 const addEnquiry = async (req, res, next) => {
@@ -162,4 +183,6 @@ module.exports = {
   addEnquiry,
   getEnquiry,
   denyProduct,
+  getApprovedpdt,
+  deleteProduct,
 };
