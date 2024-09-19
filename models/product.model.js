@@ -16,7 +16,6 @@ const productSchema = new Schema(
     },
     paintingSize: {
       type: String,
-      required: true,
     },
     paintingType: {
       type: String,
