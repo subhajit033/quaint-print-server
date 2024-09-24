@@ -51,17 +51,21 @@ const verifyOrder = async (req, res, next) => {
       const payment = await razorpay.payments.fetch(razorpay_payment_id);
       console.log(payment.notes);
       try {
-        const { cartIds, userId } = payment.notes;
+        const { cartIds, userId, address } = payment.notes;
         const cartItem = cartIds.split(',');
         for (let i = 0; i < cartItem.length; i++) {
           try {
-            await Order.create({ product: cartItem[i], user: userId });
+            await Order.create({
+              product: cartItem[i],
+              user: userId,
+              address: JSON.parse(address),
+            });
           } catch (e) {
             return next(new APPError(e.message), 400);
           }
         }
 
-        res.redirect(`https://quaintprint-main.vercel.app/payment/success`);
+        res.redirect(`http://localhost:5173/payment/success`);
 
         // const saveuser = await User.findById(saveduser._id).select('-__v');
       } catch (error) {

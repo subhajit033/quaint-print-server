@@ -12,6 +12,36 @@ const orderSchema = new Schema(
       required: true,
       ref: 'Cart',
     },
+    address: {
+      addressLine1: {
+        type: String,
+      },
+      addressLine2: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      zipCode: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+    },
+    status: {
+      type: String,
+      default: 'In process',
+    },
+    orderId: {
+      type: String,
+    },
+    paymentMode: {
+      type: String,
+    },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

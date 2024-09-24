@@ -26,6 +26,7 @@ const {
   admin_protect,
   restrictToAdmins,
 } = require('../middlewares/auth.middleware');
+const { getAllorders } = require('../controllers/order.controller');
 const router = Router();
 
 router.post('/login', adminLogin);
@@ -36,6 +37,7 @@ router.route('/enquiry').post(addEnquiry).get(getEnquiry);
 
 router.use(admin_protect);
 
+router.get('/get-all-order', getAllorders);
 router.get('/unapproved-pdt', getUnapprovedpdt);
 router.get('/approved-pdt', getApprovedpdt);
 router.delete('/delete-product/:pdtId', deleteProduct);
