@@ -20,4 +20,16 @@ const getAllorders = async (req, res, next) => {
   }
 };
 
-module.exports = { getMyOrders, getAllorders };
+const approveOrder = async (req, res, next) => {
+  const { orderId } = req.params;
+  try {
+    const order = await Order.findByIdAndUpdate(orderId, req.body, {
+      new: true,
+    });
+    successResponse(res, 200, order);
+  } catch (e) {
+    next(new APPError(e.message, 400));
+  }
+};
+
+module.exports = { getMyOrders, getAllorders, approveOrder };

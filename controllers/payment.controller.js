@@ -55,10 +55,27 @@ const verifyOrder = async (req, res, next) => {
         const cartItem = cartIds.split(',');
         for (let i = 0; i < cartItem.length; i++) {
           try {
+            const docCount = await Order.countDocuments({}); // Assuming this returns a number
+
+            // Get the current date
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+
+            // Combine year, month, and day into the desired format
+            const formattedDate = `${year}${month}${day}`;
+
+            // Increment docCount by 1 and pad with zeros accordingly
+            const paddedDocCount = String(docCount + 1).padStart(3, '0'); // Add leading zeros if docCount is < 100
+
+            // Create the final formatted order string
+            const orderNumber = `ORD-${formattedDate}-${paddedDocCount}`;
             await Order.create({
               product: cartItem[i],
               user: userId,
               address: JSON.parse(address),
+              orderId: orderNumber,
             });
           } catch (e) {
             return next(new APPError(e.message), 400);
