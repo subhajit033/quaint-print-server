@@ -5,9 +5,30 @@ const schema = new Schema({
     type: String,
     required: true,
   },
-  price: {
+  price: [
+    {
+      price: {
+        type: String,
+        required: true,
+      },
+      marketPrice: {
+        type: String,
+      },
+      size: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  aboutItem: [{ type: String }],
+  itemWeight: {
     type: String,
-    required: true,
+  },
+  material: {
+    type: String,
+  },
+  texture: {
+    type: String,
   },
   image: {
     type: String,
