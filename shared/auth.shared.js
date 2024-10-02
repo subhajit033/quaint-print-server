@@ -18,11 +18,13 @@ const createAndSendToken = (user, statusCode, res, tokenName, role) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    secure: true, // Ensure cookies are only sent over HTTPS
+    secure: false,
     sameSite: 'None',
+   
   };
+	
 
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  
 
   res.cookie(tokenName, token, cookieOptions);
   res.status(statusCode).json({
