@@ -23,7 +23,7 @@ const corsOption = {
     'http://157.173.222.205:5173',
     'http://157.173.222.205:5175',
     'http://157.173.222.205:5174',
-    'http://localhost:5173'
+    'http://localhost:5173',
     'https://quaintprint-main.vercel.app',
     'https://quaintprint-artist.vercel.app',
     'https://quaintprint-admin.vercel.app',
