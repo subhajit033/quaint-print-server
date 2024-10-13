@@ -12,7 +12,10 @@ const {
   getBestDeal,
   getBestSeller,
 } = require('../controllers/content.controller');
-const { editUserDetails } = require('../controllers/user.controller');
+const {
+  editUserDetails,
+  sendNewsLetterMail,
+} = require('../controllers/user.controller');
 const {
   addTocart,
   deleteFromCart,
@@ -37,6 +40,7 @@ router.get('/get-all-products', getAllProduct);
 router.get('/banner', getBanner);
 router.get('/best-deal', getBestDeal);
 router.get('/best-seller', getBestSeller);
+router.post('/send-mail', sendNewsLetterMail);
 
 router.use(user_protect);
 

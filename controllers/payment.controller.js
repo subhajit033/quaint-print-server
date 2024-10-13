@@ -46,6 +46,7 @@ const verifyOrder = async (req, res, next) => {
       .createHmac('sha256', process.env.RZP_KEY_SECRET)
       .update(body.toString())
       .digest('hex');
+    const frontendUrl = process.env.FRONTEND_URL;
 
     if (expectedSignature === razorpay_signature) {
       const payment = await razorpay.payments.fetch(razorpay_payment_id);
@@ -82,7 +83,7 @@ const verifyOrder = async (req, res, next) => {
           }
         }
 
-        res.redirect(`http://localhost:5173/payment/success`);
+        res.redirect(`${frontendUrl}/payment/success`);
 
         // const saveuser = await User.findById(saveduser._id).select('-__v');
       } catch (error) {

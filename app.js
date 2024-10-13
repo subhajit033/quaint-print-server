@@ -21,6 +21,9 @@ const corsOption = {
   //it is not allowed to pass any type of cookie or authentication header when origin sets to '*" you have to be specified"
   origin: [
     'http://157.173.222.205:5173',
+    'http://157.173.222.205:5175',
+    'http://157.173.222.205:5174',
+    'http://localhost:5173'
     'https://quaintprint-main.vercel.app',
     'https://quaintprint-artist.vercel.app',
     'https://quaintprint-admin.vercel.app',
@@ -54,6 +57,10 @@ app.post('/base-image', async (req, res) => {
       status: false,
     });
   }
+});
+
+app.get('/hello', (req, res) => {
+  res.send('Hello');
 });
 
 app.use('/api/v1/artists', artistRoute);
