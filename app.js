@@ -56,6 +56,10 @@ app.post('/base-image', async (req, res) => {
   }
 });
 
+app.get('/hello', (req, res) => {
+  res.send('Hello');
+});
+
 app.use('/api/v1/artists', artistRoute);
 app.use('/api/v1/uploads', uploadRoute);
 app.use('/api/v1/users', userRoute);

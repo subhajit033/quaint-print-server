@@ -1,15 +1,13 @@
 require('dotenv').config();
-const app = require("./app");
-const connectDatabase = require("./configs/db");
-
+const app = require('./app');
+const connectDatabase = require('./configs/db');
 
 // Handling uncaught Exception
-process.on("uncaughtException", (err) => {
+process.on('uncaughtException', (err) => {
   console.log(`Error: ${err.message}`);
   console.log(`shutting down the server for handling uncaught exception`);
+  process.exit(1);
 });
-
-
 
 // connect db
 connectDatabase();
@@ -20,16 +18,13 @@ connectDatabase();
 //   api_secret: process.env.CLOUDINARY_API_SECRET
 // })
 
-
 // create server
 const server = app.listen(process.env.PORT, () => {
-  console.log(
-    `Server is running on http://localhost:${process.env.PORT}`
-  );
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
 
 // unhandled promise rejection
-process.on("unhandledRejection", (err) => {
+process.on('unhandledRejection', (err) => {
   console.log(`Shutting down the server for ${err.message}`);
   console.log(`shutting down the server for unhandle promise rejection`);
 
